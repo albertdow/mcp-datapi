@@ -76,7 +76,7 @@ Or directly put add to your `claude_desktop_config.json`:
             ],
             "env": {
                 "DATAPI_URL": "<DATAPI_URL>",
-                "DATAPI_KEY": "<DATAPI_KEY>
+                "DATAPI_KEY": "<DATAPI_KEY>"
             }
         }
     }
