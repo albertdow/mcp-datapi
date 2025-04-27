@@ -12,6 +12,8 @@ The underlying API is `datapi` - docs found [here](https://ecmwf-projects.github
   - `get_jobs`: find the jobs available, optionally add a filter based on status.
     Returns a list of job ids.
   - `download_job_result`: downloads the job result using job id.
+  - `get_all_collections`: gets all available collection ids in the catalogue.
+  - `get_collection_by_id`: fetches information for a specified collection.
 
 - Environment variable support using `.env`.
 
@@ -82,3 +84,7 @@ Or directly put add to your `claude_desktop_config.json`:
     }
 }
 ```
+
+Note:
+
+- I had to specify the path to `uv`, e.g. `/Users/username/.local/bin/uv`.
