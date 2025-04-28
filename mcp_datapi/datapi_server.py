@@ -1,11 +1,16 @@
-from datetime import datetime
 import os
-from enum import StrEnum
 from typing import Any
 from mcp.server.fastmcp import FastMCP
 from dotenv import load_dotenv
 from datapi import ApiClient
-from pydantic import BaseModel
+from enums import JobStatus
+from exceptions import CdsEnvironmentVariablesNotSetError
+from models import (
+    Response,
+    CollectionInfo,
+    DownloadRequest,
+    DownloadResponse,
+)
 
 mcp = FastMCP("DatapiServer", dependencies=["datapi"])
 
@@ -13,27 +18,8 @@ load_dotenv()
 DATAPI_URL = os.getenv("DATAPI_URL")
 DATAPI_KEY = os.getenv("DATAPI_KEY")
 
-
-class JobStatus(StrEnum):
-    ACCEPTED = "accepted"
-    RUNNING = "running"
-    SUCCESSFUL = "successful"
-    FAILED = "failed"
-
-
-class Response(BaseModel):
-    message: str
-
-
-class CollectionInfo(BaseModel):
-    id: str
-    title: str
-    description: str
-    published_at: datetime
-    updated_at: datetime
-    begin_datetime: datetime
-    end_datetime: datetime
-    bbox: tuple[float, float, float, float]
+if not DATAPI_URL or not DATAPI_KEY:
+    raise CdsEnvironmentVariablesNotSetError()
 
 
 @mcp.tool()
@@ -65,7 +51,7 @@ def download_job_result(
     client.check_authentication()
     client.download_results(job_id)
 
-    return Response(message="success")
+    return Response(message="Successfully downloaded job results.")
 
 
 @mcp.tool()
@@ -98,6 +84,22 @@ def get_collection_by_id(collection_id: str) -> CollectionInfo:
             "end_datetime": collection.end_datetime,
             "bbox": collection.bbox,
         }
+    )
+
+
+@mcp.tool()
+def submit_download(download_request: DownloadRequest) -> DownloadResponse:
+    """Submit a download request."""
+
+    client = ApiClient(url=DATAPI_URL, key=DATAPI_KEY)
+    client.check_authentication()
+
+    request = client.submit(
+        download_request.id,
+        download_request.model_dump(exclude={"id"}, exclude_none=True),
+    )
+    return DownloadResponse(
+        request_id=request.request_id, message="Successfully submitted job request."
     )
 
 
