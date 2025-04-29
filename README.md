@@ -14,6 +14,7 @@ The underlying API is `datapi` - docs found [here](https://ecmwf-projects.github
   - `download_job_result`: downloads the job result using job id.
   - `get_all_collections`: gets all available collection ids in the catalogue.
   - `get_collection_by_id`: fetches information for a specified collection.
+  - `submit_job`: submits a download request.
 
 - Environment variable support using `.env`.
 

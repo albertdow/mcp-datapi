@@ -88,7 +88,7 @@ def get_collection_by_id(collection_id: str) -> CollectionInfo:
 
 
 @mcp.tool()
-def submit_download(download_request: DownloadRequest) -> DownloadResponse:
+def submit_job(download_request: DownloadRequest) -> DownloadResponse:
     """Submit a download request."""
 
     client = ApiClient(url=DATAPI_URL, key=DATAPI_KEY)
