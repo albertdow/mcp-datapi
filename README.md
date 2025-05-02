@@ -75,7 +75,7 @@ Or directly put add to your `claude_desktop_config.json`:
                 "--directory",
                 "mcp-datapi",
                 "run",
-                "datapi_server.py"
+                "mcp_datapi/datapi_server.py"
             ],
             "env": {
                 "DATAPI_URL": "<DATAPI_URL>",
